@@ -23,9 +23,9 @@ def separate_packages():
     list_of_joint_packages = []
 
     for package in unsorted_packages:
-        if package.package_delivery_deadline != "EOD":
-            truck_1.add_package(package)
-            unsorted_packages.remove(package)
+        # if package.package_delivery_deadline != "EOD":
+        #     truck_1.add_package(package)
+        #     unsorted_packages.remove(package)
         if package.package_notes != '':
             if re.search("Can only be on truck", package.package_notes):
                 truck_required = package.package_notes[-1]

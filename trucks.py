@@ -3,6 +3,10 @@ import datetime
 import csvimporter
 
 
+def get_package_delivery_time(item):
+    return item.package_delivery_deadline
+
+
 class Truck:
 
     def __init__(self, cargo_list=None):
@@ -32,6 +36,7 @@ class Truck:
             self.ordered_cargo.remove(self.ordered_cargo[0])
 
     def plan_route(self):
+        early_delivery_packages = []
         # this will allow plan_route to be called safely to replan a route in case of package changes
         if not self.unordered_cargo:
             self.unordered_cargo = self.ordered_cargo.copy()
@@ -44,6 +49,11 @@ class Truck:
         ###########ADD IN ORDERING FOR DELIVERY DEADLINE HERE##########################
         ###############################################################################
         # repeatedly cycle cargo removing the next shortest until all are sorted
+        for package in self.unordered_cargo:
+            if package.package_delivery_deadline != 'EOD':
+                early_delivery_packages.append(package)
+                self.unordered_cargo.remove(package)
+        early_delivery_packages.sort(key=get_package_delivery_time)
         while len(self.unordered_cargo) > 0:
             shortest_distance = 100.0
             chosen_item = None
@@ -65,6 +75,7 @@ class Truck:
             self.unordered_cargo.remove(chosen_item)
             self.ordered_cargo.append(chosen_item)
             self.current_location = chosen_item.get_full_destination()
+        self.ordered_cargo = early_delivery_packages + self.ordered_cargo
         destination = "4001 South 700 East(84107)"
         destination_key = self.distance_keys[destination]
         current_location_key = self.distance_keys[self.current_location]
