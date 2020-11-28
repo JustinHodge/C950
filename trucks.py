@@ -22,8 +22,8 @@ class Truck:
         self.unordered_cargo.append(package)
 
     def drop_off_next_package(self, last_delivery_time):
-        distance_traveled = self.stop_distances.pop()
-        self.total_distance_traveled += distance_traveled
+        distance_traveled = self.stop_distances[0]
+        # self.total_distance_traveled += distance_traveled
         time_passed = distance_traveled / 18.0
         this_delivery_time = last_delivery_time + datetime.timedelta(hours=time_passed)
         return this_delivery_time
@@ -33,6 +33,8 @@ class Truck:
             self.ordered_cargo[0].time_delivered = this_delivery_time
             self.delivered_cargo.append(self.ordered_cargo[0])
             self.ordered_cargo.remove(self.ordered_cargo[0])
+            distance_traveled = self.stop_distances.pop()
+            self.total_distance_traveled += distance_traveled
 
     def plan_route(self):
         early_delivery_packages = []

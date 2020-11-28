@@ -7,31 +7,45 @@ def _run_to_time(end_time):
     time_part = datetime.time(8, 0, 0)
     date_part = datetime.date.today()
     time_now = datetime.datetime.combine(date_part, time_part)
+    truck3_any_stop = False
+    truck2_any_stop = False
+    truck1_any_stop = False
     # global truck1
-    while len(truck1.ordered_cargo) > 0:
-        time_now = truck1.drop_off_next_package(time_now)
-        if time_now <= end_time:
-            truck1.set_package_delivered(time_now)
-        else:
-            break
-    truck1.drop_off_next_package(time_now)
-    time_part = datetime.time(8, 0, 0)
-    date_part = datetime.date.today()
-    time_now = datetime.datetime.combine(date_part, time_part)
-    while len(truck2.ordered_cargo) > 0:
-        time_now = truck2.drop_off_next_package(time_now)
-        if time_now <= end_time:
-            truck2.set_package_delivered(time_now)
-        else:
-            break
-    truck2.drop_off_next_package(time_now)
-    while len(truck3.ordered_cargo) > 0:
-        time_now = truck3.drop_off_next_package(time_now)
-        if time_now <= end_time:
-            truck3.set_package_delivered(time_now)
-        else:
-            break
-    truck3.drop_off_next_package(time_now)
+    if end_time > time_now:
+        while len(truck1.ordered_cargo) > 0:
+            time_now = truck1.drop_off_next_package(time_now)
+            if time_now <= end_time:
+                truck1.set_package_delivered(time_now)
+                truck1_any_stop = True
+            else:
+                break
+        if truck1_any_stop:
+            truck1.drop_off_next_package(time_now)
+        time_part = datetime.time(8, 0, 0)
+        date_part = datetime.date.today()
+        time_now = datetime.datetime.combine(date_part, time_part)
+        while len(truck2.ordered_cargo) > 0:
+            time_now = truck2.drop_off_next_package(time_now)
+            if time_now <= end_time:
+                truck2.set_package_delivered(time_now)
+                truck2_any_stop = True
+            else:
+                break
+        if truck2_any_stop:
+            truck2.drop_off_next_package(time_now)
+        while len(truck3.ordered_cargo) > 0:
+            time_now = truck3.drop_off_next_package(time_now)
+            if time_now <= end_time:
+                truck3.set_package_delivered(time_now)
+                truck3_any_stop = True
+            else:
+                break
+    #####IDK WHAT TO DO HERE UGH. SO HERE is the thing.
+        # I get my time from drop_off_next_package.
+        # but that also updates how far the truck traveled.
+        # I need to move that to set_package_delivered.
+        if truck3_any_stop:
+            truck3.drop_off_next_package(time_now)
 
 
 def all_truck_statuses(current_time):
