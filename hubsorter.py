@@ -43,19 +43,16 @@ def separate_packages():
 
     for package in list_of_joint_packages:
         truck_1.add_package(package)
-
     while len(unsorted_packages) > 0 and len(truck_1.unordered_cargo) < 16:
         truck_1.add_package(unsorted_packages.pop())
     while len(unsorted_packages) > 0 and len(truck_2.unordered_cargo) < 16:
         truck_2.add_package(unsorted_packages.pop())
     while len(unsorted_packages) > 0 and len(truck_3.unordered_cargo) < 16:
         truck_3.add_package(unsorted_packages.pop())
-
     truck_1.plan_route()
     truck_2.plan_route()
     truck_3.plan_route()
     return truck_1, truck_2, truck_3
 
 
-separate_packages()
-
+# separate_packages()

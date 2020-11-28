@@ -7,7 +7,7 @@ def _run_to_time(end_time):
     time_part = datetime.time(8, 0, 0)
     date_part = datetime.date.today()
     time_now = datetime.datetime.combine(date_part, time_part)
-    global truck1
+    # global truck1
     while len(truck1.ordered_cargo) > 0:
         time_now = truck1.drop_off_next_package(time_now)
         if time_now <= end_time:
@@ -39,13 +39,13 @@ def all_truck_statuses(current_time):
     print("\n*************\nStill To Be Delivered: ")
     print("*********\n|TRUCK 1|\n*********")
     for package in truck1.ordered_cargo:
-        print(f"  {package.package_id}, ", end='')
+        print(f"  {package.package_id}, ")
     print("*********\n|TRUCK 2|\n*********")
     for package in truck2.ordered_cargo:
-        print(f"  {package.package_id}, ", end='')
+        print(f"  {package.package_id}, ")
     print("*********\n|TRUCK 3|\n*********")
     for package in truck3.ordered_cargo:
-        print(f"  {package.package_id}, ", end='')
+        print(f"  {package.package_id}, ")
     print("\n\n*************\nPreviously Delivered: ")
     print("*********\n|TRUCK 1|\n*********")
     for package in truck1.delivered_cargo:

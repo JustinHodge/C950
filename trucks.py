@@ -23,7 +23,6 @@ class Truck:
 
     def drop_off_next_package(self, last_delivery_time):
         distance_traveled = self.stop_distances.pop()
-        print(self.stop_distances)
         self.total_distance_traveled += distance_traveled
         time_passed = distance_traveled / 18.0
         this_delivery_time = last_delivery_time + datetime.timedelta(hours=time_passed)
@@ -53,13 +52,20 @@ class Truck:
             if package.package_delivery_deadline != 'EOD':
                 early_delivery_packages.append(package)
                 self.unordered_cargo.remove(package)
+                destination_key = self.distance_keys[package.get_full_destination()]
+                current_location_key = self.distance_keys[self.current_location]
+                distance = self.distances[current_location_key][destination_key]
+                # this exists to flip the indexes since the table is incomplete
+                if distance == '':
+                    distance = self.distances[destination_key][current_location_key]
+                self.stop_distances.append(float(distance))
         early_delivery_packages.sort(key=get_package_delivery_time)
         while len(self.unordered_cargo) > 0:
             shortest_distance = 100.0
             chosen_item = None
             # Cycle through remaining unordered cargo to find the next shortest stop
-            for i in self.unordered_cargo:
-                destination_key = self.distance_keys[i.get_full_destination()]
+            for package in self.unordered_cargo:
+                destination_key = self.distance_keys[package.get_full_destination()]
                 current_location_key = self.distance_keys[self.current_location]
                 distance = self.distances[current_location_key][destination_key]
                 # this exists to flip the indexes since the table is incomplete
@@ -68,13 +74,15 @@ class Truck:
                 # continually replace the shortest distance when a new one is found
                 if float(distance) < shortest_distance:
                     shortest_distance = float(distance)
-                    next_stop = i.get_full_destination()
-                    chosen_item = i
+                    next_stop = package.get_full_destination()
+                    chosen_item = package
             self.stop_distances.append(shortest_distance)
             ordered_stop_list.append(next_stop)
             self.unordered_cargo.remove(chosen_item)
             self.ordered_cargo.append(chosen_item)
             self.current_location = chosen_item.get_full_destination()
+        for package in early_delivery_packages:
+            pass
         self.ordered_cargo = early_delivery_packages + self.ordered_cargo
         destination = "4001 South 700 East(84107)"
         destination_key = self.distance_keys[destination]
