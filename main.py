@@ -1,8 +1,15 @@
+# This is my approach to C950 using a greedy algorithm with heavy focus on modularity
+# and expandability of code.
+# Justin Hodge
+# STUDENT ID - 001108282
+
 import datetime
 
 import hubsorter
 
 
+# This method is a private method used to simulate all trucks deliveries until
+# time specified in the end_time parameter
 def _run_to_time(end_time):
     time_part = datetime.time(8, 0, 0)
     date_part = datetime.date.today()
@@ -10,7 +17,7 @@ def _run_to_time(end_time):
     truck3_any_stop = False
     truck2_any_stop = False
     truck1_any_stop = False
-    # global truck1
+    # this branch is to verify we have not invented time travel
     if end_time > time_now:
         while len(truck1.ordered_cargo) > 0:
             time_now = truck1.drop_off_next_package(time_now)
@@ -19,6 +26,10 @@ def _run_to_time(end_time):
                 truck1_any_stop = True
             else:
                 break
+        # honestly this is a little strange but It's a dynamic way to make sure the truck doesnt
+        # return to hub even though it is already there. This checks the truck1_any_stop boolean
+        # that was updated in the previous loop if any packages were delivered.
+        # there is an identical section for each truck
         if truck1_any_stop:
             truck1.drop_off_next_package(time_now)
         time_part = datetime.time(8, 0, 0)
@@ -40,14 +51,11 @@ def _run_to_time(end_time):
                 truck3_any_stop = True
             else:
                 break
-    #####IDK WHAT TO DO HERE UGH. SO HERE is the thing.
-        # I get my time from drop_off_next_package.
-        # but that also updates how far the truck traveled.
-        # I need to move that to set_package_delivered.
         if truck3_any_stop:
             truck3.drop_off_next_package(time_now)
 
 
+# This method is a simple output of necessary information for the trucks at this point in time
 def all_truck_statuses(current_time):
     print(f"Current Time is: {current_time} ")
     print("\n*************\nStill To Be Delivered: ")
@@ -63,15 +71,15 @@ def all_truck_statuses(current_time):
     print("\n\n*************\nPreviously Delivered: ")
     print("*********\n|TRUCK 1|\n*********")
     for package in truck1.delivered_cargo:
-        print(f"  {package.package_id} - Delivered at {package.time_delivered}")
+        print(f"  {package.package_id} - Delivered to {package.get_full_destination} at {package.time_delivered}")
     print(f"\nTotal distance Traveled: {truck1.total_distance_traveled}\n")
     print("*********\n|TRUCK 2|\n*********")
     for package in truck2.delivered_cargo:
-        print(f"  {package.package_id} - Delivered at {package.time_delivered}")
+        print(f"  {package.package_id} - Delivered to {package.get_full_destination} at {package.time_delivered}")
     print(f"\nTotal distance Traveled: {truck2.total_distance_traveled}\n")
     print("*********\n|TRUCK 3|\n*********")
     for package in truck3.delivered_cargo:
-        print(f"  {package.package_id} - Delivered at {package.time_delivered}")
+        print(f"  {package.package_id} - Delivered to {package.get_full_destination} at {package.time_delivered}")
     print(f"\nTotal distance Traveled: {truck3.total_distance_traveled}\n")
 
     print(f"************TOTAL DISTANCE ALL TRUCKS: "
@@ -79,6 +87,8 @@ def all_truck_statuses(current_time):
           f"************\n\n")
 
 
+# This main function kick starts the entire program and provides an interface
+# for the user to denote at what time they would like to see the status of all trucks
 if __name__ == '__main__':
     truck1, truck2, truck3 = hubsorter.separate_packages()
     option = ''
@@ -92,6 +102,7 @@ if __name__ == '__main__':
             time_to_check = datetime.datetime.combine(date_part, time_part)
             _run_to_time(time_to_check)
             all_truck_statuses(time_to_check)
+            truck1, truck2, truck3 = hubsorter.separate_packages()
 
         if option == "time":
             time_input = input("What time would you like to check? FORMAT HH:MM - 24Hour")
@@ -102,9 +113,4 @@ if __name__ == '__main__':
             time_to_check = datetime.datetime.combine(date_part, time_part)
             _run_to_time(time_to_check)
             all_truck_statuses(time_to_check)
-
-
-
-
-
-
+            truck1, truck2, truck3 = hubsorter.separate_packages()

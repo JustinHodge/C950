@@ -16,10 +16,12 @@ class WGUPSPackage:
             self.delivery_status = DeliveryStatus.HUB
             self.time_delivered = None
 
+    # This method to Override the builtin dunder str method for objects of this type
+    # This allows me to get a string representation of any package quickly and easily
     def __str__(self):
         self.package_info_list.append(self.delivery_status.value)
         return str(self.package_info_list)
-
+    # method to package up the destination out of it's components stored in the object as a string
     def get_full_destination(self):
         return self.package_address + "(" + self.package_zip + ")"
 
