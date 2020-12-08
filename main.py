@@ -26,10 +26,9 @@ def _run_to_time(end_time):
                 truck1_any_stop = True
             else:
                 break
-        # honestly this is a little strange but It's a dynamic way to make sure the truck doesnt
-        # return to hub even though it is already there. This checks the truck1_any_stop boolean
-        # that was updated in the previous loop if any packages were delivered.
-        # there is an identical section for each truck
+        # This if branch is to allow a truck to return to the hub if and
+        # only if the truck actually left the hub to begin with.
+        # There is an identical branch for each truck
         if truck1_any_stop:
             truck1.drop_off_next_package(time_now)
         time_part = datetime.time(8, 0, 0)
