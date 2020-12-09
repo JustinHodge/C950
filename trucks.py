@@ -25,6 +25,10 @@ class Truck:
 
     # this method is find what time the next package in the ordered list of packages would be delivered
     def drop_off_next_package(self, last_delivery_time):
+        print(type(self.stop_distances))
+        distance_traveled = float(self.stop_distances.pop())
+        print(self.stop_distances)
+        self.total_distance_traveled += distance_traveled
         distance_traveled = self.stop_distances[0]
         # self.total_distance_traveled += distance_traveled
         time_passed = distance_traveled / 18.0
