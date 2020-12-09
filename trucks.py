@@ -25,12 +25,8 @@ class Truck:
 
     # this method is find what time the next package in the ordered list of packages would be delivered
     def drop_off_next_package(self, last_delivery_time):
-        print(type(self.stop_distances))
-        distance_traveled = float(self.stop_distances.pop())
         print(self.stop_distances)
-        self.total_distance_traveled += distance_traveled
         distance_traveled = self.stop_distances[0]
-        # self.total_distance_traveled += distance_traveled
         time_passed = distance_traveled / 18.0
         this_delivery_time = last_delivery_time + datetime.timedelta(hours=time_passed)
         return this_delivery_time
@@ -103,8 +99,8 @@ class Truck:
             self.unordered_cargo.remove(chosen_item)
             self.ordered_cargo.append(chosen_item)
             self.current_location = chosen_item.get_full_destination()
-        for package in early_delivery_packages:
-            pass
+        # for package in early_delivery_packages:
+        #     pass
         self.ordered_cargo = early_delivery_packages + self.ordered_cargo
         destination = "4001 South 700 East(84107)"
         destination_key = self.distance_keys[destination]

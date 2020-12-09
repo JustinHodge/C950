@@ -21,6 +21,7 @@ class WGUPSPackage:
     def __str__(self):
         self.package_info_list.append(self.delivery_status.value)
         return str(self.package_info_list)
+
     # method to package up the destination out of it's components stored in the object as a string
     def get_full_destination(self):
         return self.package_address + "(" + self.package_zip + ")"
