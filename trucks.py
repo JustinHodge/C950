@@ -2,13 +2,14 @@ import datetime
 
 import csvimporter
 
-
+# this is a helper function to be used as the filter key for sorting in the plan_route method
 def get_package_delivery_time(item):
     return item.package_delivery_deadline
 
 
 class Truck:
 
+    # here we create a nice empty truck object
     def __init__(self, cargo_list=None):
         self.distances, self.distance_keys = csvimporter.get_distances()
         self.unordered_cargo = cargo_list or []
@@ -18,9 +19,11 @@ class Truck:
         self.total_distance_traveled = 0
         self.current_location = "4001 South 700 East(84107)"
 
+    # very simple method to add a package to the end of what this truck is carrying
     def add_package(self, package):
         self.unordered_cargo.append(package)
 
+    # this method is find what time the next package in the ordered list of packages would be delivered
     def drop_off_next_package(self, last_delivery_time):
         distance_traveled = self.stop_distances[0]
         # self.total_distance_traveled += distance_traveled
@@ -28,6 +31,7 @@ class Truck:
         this_delivery_time = last_delivery_time + datetime.timedelta(hours=time_passed)
         return this_delivery_time
 
+    # this method will convert the next package in ordered_cargo to delivered status
     def set_package_delivered(self, this_delivery_time):
         if self.ordered_cargo:
             self.ordered_cargo[0].time_delivered = this_delivery_time
@@ -36,14 +40,15 @@ class Truck:
             distance_traveled = self.stop_distances.pop()
             self.total_distance_traveled += distance_traveled
 
+    # this method will take all packages assigned to this truck and order them in the most efficient delivery pattern
     def plan_route(self):
         early_delivery_packages = []
-        # this will allow plan_route to be called safely to replan a route in case of package changes
+        # this will allow plan_route to be called safely to re-plan a route in case of package changes
         if not self.unordered_cargo:
             self.unordered_cargo = self.ordered_cargo.copy()
             self.ordered_cargo = []
             self.stop_distances = []
-        # greedy algorithm
+        # I used the greedy algorithm at this point to order the packages.
         next_stop = None
         ordered_stop_list = []
         ###############################################################################
@@ -105,6 +110,7 @@ class Truck:
             distance = self.distances[destination_key][current_location_key]
         self.stop_distances.append(float(distance))
         self.current_location = destination
+
 
     def check_status(self):
         # returns a tuple of current location, current total travel distance, and the next stop
