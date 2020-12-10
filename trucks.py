@@ -67,17 +67,6 @@ class Truck:
                     distance = self.distances[destination_key][current_location_key]
                 self.stop_distances.append(float(distance))
         early_delivery_packages.sort(key=get_package_delivery_time)
-        for package in early_delivery_packages:
-            destination_key = self.distance_keys[package.get_full_destination()]
-            current_location_key = self.distance_keys[self.current_location]
-            distance = self.distances[current_location_key][destination_key]
-            # this exists to flip the indexes since the table is incomplete
-            if distance == '':
-                distance = self.distances[destination_key][current_location_key]
-            self.stop_distances.append(float(distance))
-            ordered_stop_list.append(next_stop)
-            self.ordered_cargo.append(package)
-            self.current_location = package.get_full_destination()
         while len(self.unordered_cargo) > 0:
             shortest_distance = 100.0
             chosen_item = None
@@ -99,8 +88,6 @@ class Truck:
             self.unordered_cargo.remove(chosen_item)
             self.ordered_cargo.append(chosen_item)
             self.current_location = chosen_item.get_full_destination()
-        # for package in early_delivery_packages:
-        #     pass
         self.ordered_cargo = early_delivery_packages + self.ordered_cargo
         destination = "4001 South 700 East(84107)"
         destination_key = self.distance_keys[destination]

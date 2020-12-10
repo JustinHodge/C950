@@ -70,15 +70,15 @@ def all_truck_statuses(current_time):
     print("\n\n*************\nPreviously Delivered: ")
     print("*********\n|TRUCK 1|\n*********")
     for package in truck1.delivered_cargo:
-        print(f"  {package.package_id} - Delivered to {package.get_full_destination} at {package.time_delivered}")
+        print(f"  {package.package_id} - Delivered to {package.get_full_destination()} at {package.time_delivered}")
     print(f"\nTotal distance Traveled: {truck1.total_distance_traveled}\n")
     print("*********\n|TRUCK 2|\n*********")
     for package in truck2.delivered_cargo:
-        print(f"  {package.package_id} - Delivered to {package.get_full_destination} at {package.time_delivered}")
+        print(f"  {package.package_id} - Delivered to {package.get_full_destination()} at {package.time_delivered}")
     print(f"\nTotal distance Traveled: {truck2.total_distance_traveled}\n")
     print("*********\n|TRUCK 3|\n*********")
     for package in truck3.delivered_cargo:
-        print(f"  {package.package_id} - Delivered to {package.get_full_destination} at {package.time_delivered}")
+        print(f"  {package.package_id} - Delivered to {package.get_full_destination()} at {package.time_delivered}")
     print(f"\nTotal distance Traveled: {truck3.total_distance_traveled}\n")
 
     print(f"************TOTAL DISTANCE ALL TRUCKS: "
