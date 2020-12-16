@@ -10,6 +10,9 @@ import hubsorter
 
 # This method is a private method used to simulate all trucks deliveries until
 # time specified in the end_time parameter
+from wgupspackage import DeliveryStatus
+
+
 def _run_to_time(end_time):
     time_part = datetime.time(8, 0, 0)
     date_part = datetime.date.today()
@@ -19,6 +22,8 @@ def _run_to_time(end_time):
     truck1_any_stop = False
     # this branch is to verify we have not invented time travel
     if end_time > time_now:
+        for package in truck1.ordered_cargo:
+            package.delivery_status = DeliveryStatus.SENT
         while len(truck1.ordered_cargo) > 0:
             time_now = truck1.drop_off_next_package(time_now)
             if time_now <= end_time:

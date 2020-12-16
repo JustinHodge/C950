@@ -3,6 +3,9 @@ import datetime
 import csvimporter
 
 # this is a helper function to be used as the filter key for sorting in the plan_route method
+from wgupspackage import DeliveryStatus
+
+
 def get_package_delivery_time(item):
     return item.package_delivery_deadline
 
@@ -25,7 +28,6 @@ class Truck:
 
     # this method is find what time the next package in the ordered list of packages would be delivered
     def drop_off_next_package(self, last_delivery_time):
-        print(self.stop_distances)
         distance_traveled = self.stop_distances[0]
         time_passed = distance_traveled / 18.0
         this_delivery_time = last_delivery_time + datetime.timedelta(hours=time_passed)
@@ -34,6 +36,7 @@ class Truck:
     # this method will convert the next package in ordered_cargo to delivered status
     def set_package_delivered(self, this_delivery_time):
         if self.ordered_cargo:
+            self.ordered_cargo[0].delivery_status = DeliveryStatus.ARRIVE
             self.ordered_cargo[0].time_delivered = this_delivery_time
             self.delivered_cargo.append(self.ordered_cargo[0])
             self.ordered_cargo.remove(self.ordered_cargo[0])
@@ -51,11 +54,15 @@ class Truck:
         # I used the greedy algorithm at this point to order the packages.
         next_stop = None
         ordered_stop_list = []
-        ###############################################################################
-        ###########ADD IN ORDERING FOR DELIVERY DEADLINE HERE##########################
-        ###############################################################################
         # repeatedly cycle cargo removing the next shortest until all are sorted
         for package in self.unordered_cargo:
+            # package 9, Third District Juvenile Court, will be corrected at 10:20 a.m.
+            #                           The correct address is 410 S State St., Salt Lake City, UT 84111
+            if package.package_id == 9:
+                package.package_address = "410 S State St."
+                package.package_city = "Salt Lake City"
+                package.package_state = "UT"
+                package.package_zip = "84111"
             if package.package_delivery_deadline != 'EOD':
                 early_delivery_packages.append(package)
                 self.unordered_cargo.remove(package)

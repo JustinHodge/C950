@@ -26,7 +26,7 @@ class WGUPSPackage:
     def get_full_destination(self):
         return self.package_address + "(" + self.package_zip + ")"
 
-
+# simple enum to track location of any package
 class DeliveryStatus(Enum):
     HUB = "At Hub"
     SENT = "In Transit"
