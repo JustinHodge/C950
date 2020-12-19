@@ -53,7 +53,6 @@ def separate_packages():
                 unsorted_packages.remove(package)
 
     for package in list_of_joint_packages:
-        print(package.package_id)
         truck_1.add_package(package)
     while len(unsorted_packages) > 0 and len(truck_1.unordered_cargo) < 16:
         truck_1.add_package(unsorted_packages.pop())

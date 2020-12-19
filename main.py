@@ -7,12 +7,12 @@ import datetime
 
 import hubsorter
 
-
 # This method is a private method used to simulate all trucks deliveries until
 # time specified in the end_time parameter
 from wgupspackage import DeliveryStatus
 
 
+# This is a private method used to simulate all deliveries of each truck up until the time passed in.
 def _run_to_time(end_time):
     time_part = datetime.time(8, 0, 0)
     date_part = datetime.date.today()
@@ -76,15 +76,15 @@ def all_truck_statuses(current_time):
     print("*********\n|TRUCK 1|\n*********")
     for package in truck1.delivered_cargo:
         print(f"  {package.package_id} - Delivered to {package.get_full_destination()} at {package.time_delivered}")
-    print(f"\nTotal distance Traveled: {truck1.total_distance_traveled}\n")
+    print(f"\nTotal distance Traveled by truck 1: {truck1.total_distance_traveled}\n")
     print("*********\n|TRUCK 2|\n*********")
     for package in truck2.delivered_cargo:
         print(f"  {package.package_id} - Delivered to {package.get_full_destination()} at {package.time_delivered}")
-    print(f"\nTotal distance Traveled: {truck2.total_distance_traveled}\n")
+    print(f"\nTotal distance Traveled by truck 2: {truck2.total_distance_traveled}\n")
     print("*********\n|TRUCK 3|\n*********")
     for package in truck3.delivered_cargo:
         print(f"  {package.package_id} - Delivered to {package.get_full_destination()} at {package.time_delivered}")
-    print(f"\nTotal distance Traveled: {truck3.total_distance_traveled}\n")
+    print(f"\nTotal distance Traveled by truck 3: {truck3.total_distance_traveled}\n")
 
     print(f"************TOTAL DISTANCE ALL TRUCKS: "
           f"{truck1.total_distance_traveled + truck2.total_distance_traveled + truck3.total_distance_traveled}"
@@ -97,7 +97,8 @@ if __name__ == '__main__':
     truck1, truck2, truck3 = hubsorter.separate_packages()
     option = ''
     while option != "quit":
-        option = (input("What would you like to do? Run [all] or check status at a certain [time] or [quit]?")
+        option = (input("What would you like to do? Run status of [all] or check status of packages"
+                        " at a certain [time] or [quit]?")
                   .lower()
                   .strip())
         if option == "all":

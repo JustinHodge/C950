@@ -2,17 +2,17 @@ import datetime
 
 import csvimporter
 
-# this is a helper function to be used as the filter key for sorting in the plan_route method
 from wgupspackage import DeliveryStatus
 
 
+# This is a helper function to be used as the filter key for sorting in the plan_route method
 def get_package_delivery_time(item):
     return item.package_delivery_deadline
 
 
 class Truck:
 
-    # here we create a nice empty truck object
+    # here we create an empty truck object
     def __init__(self, cargo_list=None):
         self.distances, self.distance_keys = csvimporter.get_distances()
         self.unordered_cargo = cargo_list or []
@@ -104,7 +104,6 @@ class Truck:
             distance = self.distances[destination_key][current_location_key]
         self.stop_distances.append(float(distance))
         self.current_location = destination
-
 
     def check_status(self):
         # returns a tuple of current location, current total travel distance, and the next stop

@@ -13,7 +13,6 @@ def csv_import(file_name):
         iterable_CSV = csv.reader(raw_CSV)
         for i in iterable_CSV:
             csv_as_list.append(i)
-        print(csv_as_list)
         return csv_as_list
 
 # this method creates an instance of the custom HashMap containing packages from the package_table
