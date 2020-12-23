@@ -7,6 +7,7 @@ distance_table = "WGUPS Distance Table.csv"
 package_table = "WGUPS Package File.csv"
 
 # this method will open the csv file passed in and parse it returning a usable list format
+# O(1)
 def csv_import(file_name):
     csv_as_list = []
     with open(file_name, "r") as raw_CSV:
@@ -16,6 +17,7 @@ def csv_import(file_name):
         return csv_as_list
 
 # this method creates an instance of the custom HashMap containing packages from the package_table
+# O(N)
 def get_packages():
     hash_table = HashMap(len(csv_import(package_table)))
     for i in csv_import(package_table):
@@ -23,7 +25,7 @@ def get_packages():
         hash_table.insert_item(int(package.package_id), package)
     return hash_table
 
-
+# O(N)
 def get_distances():
     # this returns a tuple. [0] is a 2 dimensional list of distances
     # [1] is a dictionary assigning each key(address) to it's index for use

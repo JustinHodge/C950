@@ -13,6 +13,7 @@ def get_package_delivery_time(item):
 class Truck:
 
     # here we create an empty truck object
+    # O(1)
     def __init__(self, cargo_list=None):
         self.distances, self.distance_keys = csvimporter.get_distances()
         self.unordered_cargo = cargo_list or []
@@ -23,10 +24,12 @@ class Truck:
         self.current_location = "4001 South 700 East(84107)"
 
     # very simple method to add a package to the end of what this truck is carrying
+    # O(1)
     def add_package(self, package):
         self.unordered_cargo.append(package)
 
     # this method is find what time the next package in the ordered list of packages would be delivered
+    # O(1)
     def drop_off_next_package(self, last_delivery_time):
         distance_traveled = self.stop_distances[0]
         time_passed = distance_traveled / 18.0
@@ -34,6 +37,7 @@ class Truck:
         return this_delivery_time
 
     # this method will convert the next package in ordered_cargo to delivered status
+    # O(1)
     def set_package_delivered(self, this_delivery_time):
         if self.ordered_cargo:
             self.ordered_cargo[0].delivery_status = DeliveryStatus.ARRIVE
@@ -44,6 +48,7 @@ class Truck:
             self.total_distance_traveled += distance_traveled
 
     # this method will take all packages assigned to this truck and order them in the most efficient delivery pattern
+    # O(N^2)
     def plan_route(self):
         early_delivery_packages = []
         # this will allow plan_route to be called safely to re-plan a route in case of package changes
@@ -105,6 +110,7 @@ class Truck:
         self.stop_distances.append(float(distance))
         self.current_location = destination
 
+    # O(1)
     def check_status(self):
         # returns a tuple of current location, current total travel distance, and the next stop
         return self.current_location, self.total_distance_traveled, self.ordered_cargo[0]

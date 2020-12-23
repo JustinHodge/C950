@@ -13,6 +13,7 @@ from wgupspackage import DeliveryStatus
 
 
 # This is a private method used to simulate all deliveries of each truck up until the time passed in.
+# O(N)
 def _run_to_time(end_time):
     time_part = datetime.time(8, 0, 0)
     date_part = datetime.date.today()
@@ -60,6 +61,7 @@ def _run_to_time(end_time):
 
 
 # This method is a simple output of necessary information for the trucks at this point in time
+# O(N)
 def all_truck_statuses(current_time):
     print(f"Current Time is: {current_time} ")
     print("\n*************\nStill To Be Delivered: ")
@@ -93,6 +95,7 @@ def all_truck_statuses(current_time):
 
 # This main function kick starts the entire program and provides an interface
 # for the user to denote at what time they would like to see the status of all trucks
+# O(1)
 if __name__ == '__main__':
     truck1, truck2, truck3 = hubsorter.separate_packages()
     option = ''

@@ -2,6 +2,7 @@ from enum import Enum
 
 
 class WGUPSPackage:
+    # O(1)
     def __init__(self, package_info_list):
         if len(package_info_list) >= 8:
             self.package_info_list = package_info_list[:8]
@@ -18,13 +19,16 @@ class WGUPSPackage:
 
     # This method to Override the builtin dunder str method for objects of this type
     # This allows me to get a string representation of any package quickly and easily
+    # O(1)
     def __str__(self):
         self.package_info_list.append(self.delivery_status.value)
         return str(self.package_info_list)
 
     # method to package up the destination out of it's components stored in the object as a string
+    # O(1)
     def get_full_destination(self):
         return self.package_address + "(" + self.package_zip + ")"
+
 
 # simple enum to track location of any package
 class DeliveryStatus(Enum):

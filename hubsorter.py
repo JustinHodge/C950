@@ -2,10 +2,12 @@ import csvimporter
 from trucks import Truck
 import re
 
+
 # this method simulates a sorting warehouse for the logistics. a place where all
 # packages scheduled for this day can be put on the truck they are most efficient on
 # to facilitate easier application of the greedy algorithm and allow accounting for special instructions
 # as needed.
+# O(N)
 def separate_packages():
     # maximum of 16 packs per truck
     # package 9, Third District Juvenile Court, will be corrected at 10:20 a.m.
@@ -64,6 +66,3 @@ def separate_packages():
     truck_2.plan_route()
     truck_3.plan_route()
     return truck_1, truck_2, truck_3
-
-
-# separate_packages()
