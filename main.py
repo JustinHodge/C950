@@ -67,14 +67,14 @@ def all_truck_statuses(current_time):
     print("\n*************\nStill To Be Delivered: ")
     print("*********\n|TRUCK 1|\n*********")
     for package in truck1.ordered_cargo:
-        print(f"  {package.package_id}, ")
-    print("*********\n|TRUCK 2|\n*********")
+        print(f"{package.package_id}, ", end='')
+    print("\n*********\n|TRUCK 2|\n*********")
     for package in truck2.ordered_cargo:
-        print(f"  {package.package_id}, ")
-    print("*********\n|TRUCK 3|\n*********")
+        print(f"{package.package_id}, ", end='')
+    print("\n*********\n|TRUCK 3|\n*********")
     for package in truck3.ordered_cargo:
-        print(f"  {package.package_id}, ")
-    print("\n\n*************\nPreviously Delivered: ")
+        print(f"{package.package_id}, ", end='')
+    print("\n\n\n*************\nPreviously Delivered: ")
     print("*********\n|TRUCK 1|\n*********")
     for package in truck1.delivered_cargo:
         print(f"  {package.package_id} - Delivered to {package.get_full_destination()} at {package.time_delivered}")
