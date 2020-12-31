@@ -26,6 +26,7 @@ def separate_packages():
     list_of_joint_packages = []
 
     # This filters out packages with special instructions to deal with accordingly
+    #O(N)
     for package in unsorted_packages:
         if package.package_notes != '':
             # This catches all packages that are required to be sent on truck 2 and load them accordingly.
@@ -53,7 +54,7 @@ def separate_packages():
             elif re.search("Must be delivered with", package.package_notes):
                 list_of_joint_packages.append(package)
                 unsorted_packages.remove(package)
-
+    #O(N)
     for package in list_of_joint_packages:
         truck_1.add_package(package)
     while len(unsorted_packages) > 0 and len(truck_1.unordered_cargo) < 16:

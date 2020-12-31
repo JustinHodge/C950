@@ -60,6 +60,7 @@ class Truck:
         next_stop = None
         ordered_stop_list = []
         # repeatedly cycle cargo removing the next shortest until all are sorted
+        # O(N)
         for package in self.unordered_cargo:
             # package 9, Third District Juvenile Court, will be corrected at 10:20 a.m.
             #                           The correct address is 410 S State St., Salt Lake City, UT 84111
@@ -79,6 +80,7 @@ class Truck:
                     distance = self.distances[destination_key][current_location_key]
                 self.stop_distances.append(float(distance))
         early_delivery_packages.sort(key=get_package_delivery_time)
+        # O(N^2)
         while len(self.unordered_cargo) > 0:
             shortest_distance = 100.0
             chosen_item = None
