@@ -51,6 +51,7 @@ class Truck:
     # O(N^2)
     def plan_route(self):
         early_delivery_packages = []
+        ordered_early_delivery_packages = []
         # this will allow plan_route to be called safely to re-plan a route in case of package changes
         if not self.unordered_cargo:
             self.unordered_cargo = self.ordered_cargo.copy()
@@ -59,6 +60,7 @@ class Truck:
         # I used the greedy algorithm at this point to order the packages.
         next_stop = None
         ordered_stop_list = []
+        packages_to_remove_before_pass = []
         # repeatedly cycle cargo removing the next shortest until all are sorted
         # O(N)
         for package in self.unordered_cargo:
@@ -71,15 +73,31 @@ class Truck:
                 package.package_zip = "84111"
             if package.package_delivery_deadline != 'EOD':
                 early_delivery_packages.append(package)
-                self.unordered_cargo.remove(package)
+                packages_to_remove_before_pass.append(package)
+        for package in packages_to_remove_before_pass:
+            self.unordered_cargo.remove(package)
+        # O(N^2)
+        while len(early_delivery_packages) > 0:
+            shortest_distance = 100.0
+            chosen_item = None
+            # Cycle through remaining unordered cargo to find the next shortest stop
+            for package in early_delivery_packages:
                 destination_key = self.distance_keys[package.get_full_destination()]
                 current_location_key = self.distance_keys[self.current_location]
                 distance = self.distances[current_location_key][destination_key]
                 # this exists to flip the indexes since the table is incomplete
                 if distance == '':
                     distance = self.distances[destination_key][current_location_key]
-                self.stop_distances.append(float(distance))
-        early_delivery_packages.sort(key=get_package_delivery_time)
+                # continually replace the shortest distance when a new one is found
+                if float(distance) < shortest_distance:
+                    shortest_distance = float(distance)
+                    next_stop = package.get_full_destination()
+                    chosen_item = package
+            self.stop_distances.append(shortest_distance)
+            ordered_stop_list.append(next_stop)
+            early_delivery_packages.remove(chosen_item)
+            ordered_early_delivery_packages.append(chosen_item)
+            self.current_location = chosen_item.get_full_destination()
         # O(N^2)
         while len(self.unordered_cargo) > 0:
             shortest_distance = 100.0
@@ -102,7 +120,7 @@ class Truck:
             self.unordered_cargo.remove(chosen_item)
             self.ordered_cargo.append(chosen_item)
             self.current_location = chosen_item.get_full_destination()
-        self.ordered_cargo = early_delivery_packages + self.ordered_cargo
+        self.ordered_cargo = ordered_early_delivery_packages + self.ordered_cargo
         destination = "4001 South 700 East(84107)"
         destination_key = self.distance_keys[destination]
         current_location_key = self.distance_keys[self.current_location]
